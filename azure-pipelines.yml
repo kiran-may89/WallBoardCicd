@@ -83,40 +83,6 @@ steps:
     versionName: '$(major).$(minor).$(revision)'
     printFile: true
 
-- task: Gradle@2
-  inputs:
-    workingDirectory: 'android/'
-    options: '-PversionName=$(major).$(minor).$(revision) -PversionCode=$(deployedVersionCode)'
-    gradleWrapperFile: 'android/gradlew'
-    gradleOptions: '-Xmx3072m'
-    publishJUnitResults: false
-    testResultsFiles: '**/TEST-*.xml'
-    tasks: 'bundleRelease'
-    javaHomeOption: 'JDKVersion'
-
-- task: AndroidSigning@3
-  inputs:
-    apkFiles: '**/*.aab'      
-    apksignerKeystoreFile: 'WallboardMachines.jks'
-    apksign: true
-    
-    apksignerArguments: --min-sdk-version 23
-    apksignerKeystorePassword: '$(jarsignerKeystorePassword)'
-    apksignerKeystoreAlias: '$(MYAPP_UPLOAD_KEY_ALIAS)'
-    apksignerKeyPassword: '$(jarsignerKeyPassword)'
-    zipalign: false
-
-- script: mv android/app/build/outputs/bundle/release/app-release.aab WallBoard$(Build.BuildNumber).aab
-  displayName: 'Rename apk'
-- task: PublishBuildArtifacts@1
-  inputs:
-    pathtoPublish: WallBoard$(Build.BuildNumber).aab
-    artifactName: drop
-    publishLocation: 'container'
- 
-
-
-
 - task: Xcode@5
   inputs:
     actions: 'build'
