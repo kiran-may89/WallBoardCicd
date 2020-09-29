@@ -54,12 +54,7 @@ steps:
 - script: yarn add sharp
   displayName: "add sharp"
 
-- task: ReactNativeBundle@0
-  inputs:
-    platform: 'ios'
-    entryFile: 'index.js'
-    assetsDest: 'ios'
-    devFlag: false  
+
 - task: CocoaPods@0
   displayName: "Install CocoaPods dependencies"
   inputs:
