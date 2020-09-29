@@ -1,0 +1,103 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger:
+- dev
+variables:       
+  - group: WallBoard   
+  - name: configuration
+    value: 'Release'
+  - name: sdk
+    value: 'iphoneos'
+             
+ 
+pool:
+  vmImage: 'macOS-10.14'
+
+
+steps:
+
+- task: NodeTool@0
+  inputs:
+    versionSpec: '12.18.3'
+    checkLatest: true
+  displayName: 'Install Node'
+
+- script: npm cache clean --force 
+  displayName: "Clear Cache"
+
+- script: npm install --verbose sharp
+  displayName: 'Install node dependencies'
+
+- script: npm install react-native
+  displayName: "install react native"
+
+- script: npm install sharp
+  displayName: "install sharp"
+
+- script: yarn add sharp
+  displayName: "add sharp"
+
+- task: ReactNativeBundle@0
+  inputs:
+    platform: 'ios'
+    entryFile: 'index.js'
+    assetsDest: 'ios'
+    devFlag: false
+
+   
+
+
+- task: CocoaPods@0
+  displayName: "Install CocoaPods dependencies"
+  inputs:
+    workingDirectory: 'ios'
+    forceRepoUpdate: true
+
+- task: InstallAppleCertificate@2
+  inputs:
+   certSecureFile: 'ser.p12'
+   certPwd: '$(p12Password)'
+   keychain: 'temp'
+ 
+
+- task: InstallAppleProvisioningProfile@1
+  inputs:
+   provisioningProfileLocation: 'secureFiles'
+   provProfileSecureFile: 'WallBoard.mobileprovision'
+
+
+- bash: echo '$(provisioningProfile)'
+- bash: echo '$(p12FileName)'
+- bash: echo '$(APPLE_CERTIFICATE_SIGNING_IDENTITY)'
+- bash: echo '$(APPLE_PROV_PROFILE_UUID)'
+
+- task: Xcode@5
+  inputs:
+    actions: 'build'
+    configuration: '$(configuration)'
+    sdk: '$(sdk)'
+    xcWorkspacePath: 'ios/wallBoard.xcworkspace'
+    scheme: 'wallBoard'
+    xcodeVersion: 'specifyPath'
+    xcodeDeveloperDir: '/Applications/Xcode_11.3.app/Contents/Developer'
+    packageApp: true
+    signingOption: 'manual'
+    # signingIdentity: 'Apple Development: Smart Team (2V754HBUDQ)'
+    signingIdentity: '$(APPLE_CERTIFICATE_SIGNING_IDENTITY)'
+    provisioningProfileUuid: '$(APPLE_PROV_PROFILE_UUID)'
+    
+
+- task: CopyFiles@2
+  inputs:
+    contents: '**/*.ipa'
+    targetFolder: '$(build.artifactStagingDirectory)'
+    overWrite: true
+
+- task: PublishBuildArtifacts@1
+  inputs:
+    pathtoPublish: '$(build.artifactStagingDirectory)/output/$(sdk)/$(configuration)' 
+    artifactName: 'drop' 
+    publishLocation: 'Container'

@@ -1,0 +1,60 @@
+{
+  "name": "wallBoard",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "android": "react-native run-android",
+    "ios": "react-native run-ios",
+    "start": "react-native start",
+    "test": "jest",
+    "lint": "eslint ."
+  },
+  "dependencies": {
+    "@aspnet/signalr": "^1.1.4",
+    "@bam.tech/react-native-make": "^3.0.0",
+    "@react-native-community/masked-view": "^0.1.10",
+    "@reduxjs/toolkit": "^1.4.0",
+    "jwt-decode": "^2.2.0",
+    "moment": "^2.27.0",
+    "react": "16.11.0",
+    "react-native": "0.62.2",
+    "react-native-background-timer": "^2.3.1",
+    "react-native-device-detection": "^0.2.1",
+    "react-native-device-info": "^5.6.2",
+    "react-native-double-tap": "^1.0.1",
+    "react-native-gesture-handler": "^1.6.1",
+    "react-native-idle-timer": "^2.1.6",
+    "react-native-keychain": "^6.1.1",
+    "react-native-keyevent": "^0.2.8",
+    "react-native-locale-listener": "git+https://github.com/OlexandrPadura/react-native-locale-listener.git",
+    "react-native-navigation": "git+https://github.com/OlexandrPadura/react-native-navigation.git",
+    "react-native-navigation-hooks": "^6.1.0",
+    "react-native-no-flicker-image": "^1.0.2",
+    "react-native-orientation-locker": "^1.2.0",
+    "react-native-restart": "0.0.17",
+    "react-native-safe-area-context": "^3.0.7",
+    "react-native-screens": "^2.9.0",
+    "react-native-signalr": "^1.0.6",
+    "react-native-svg": "^12.1.0",
+    "react-native-svg-charts": "^5.4.0",
+    "react-native-svg-transformer": "^0.14.3",
+    "react-navigation": "^4.4.0",
+    "react-redux": "^7.2.0",
+    "redux": "^4.0.5",
+    "redux-thunk": "^2.3.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.10.4",
+    "@babel/runtime": "^7.10.4",
+    "@react-native-community/eslint-config": "^2.0.0",
+    "babel-jest": "^26.1.0",
+    "eslint": "^7.4.0",
+    "jest": "^26.1.0",
+    "jetifier": "^1.6.6",
+    "metro-react-native-babel-preset": "^0.60.0",
+    "react-test-renderer": "16.11.0"
+  },
+  "jest": {
+    "preset": "react-native"
+  }
+}
