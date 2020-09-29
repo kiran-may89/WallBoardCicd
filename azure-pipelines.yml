@@ -4,11 +4,7 @@
 # https://aka.ms/yaml
 
 trigger:
- branches:
-   include:
-     - dev
-   exclude:
-     - master
+  - master
 
 variables:
   - group: WallBoard
@@ -58,12 +54,7 @@ steps:
 - script: yarn add sharp
   displayName: "add sharp"
 
-- task: ReactNativeBundle@0
-  inputs:
-    platform: 'ios'
-    entryFile: 'index.js'
-    assetsDest: 'ios'
-    devFlag: false  
+
 - task: CocoaPods@0
   displayName: "Install CocoaPods dependencies"
   inputs:
@@ -91,41 +82,13 @@ steps:
     versionCode: '$(deployedVersionCode)'
     versionName: '$(major).$(minor).$(revision)'
     printFile: true
-
-- task: Gradle@2
+- task: ReactNativeBundle@0
   inputs:
-    workingDirectory: 'android/'
-    options: '-PversionName=$(major).$(minor).$(revision) -PversionCode=$(deployedVersionCode)'
-    gradleWrapperFile: 'android/gradlew'
-    gradleOptions: '-Xmx3072m'
-    publishJUnitResults: false
-    testResultsFiles: '**/TEST-*.xml'
-    tasks: 'bundleRelease'
-    javaHomeOption: 'JDKVersion'
-
-- task: AndroidSigning@3
-  inputs:
-    apkFiles: '**/*.aab'      
-    apksignerKeystoreFile: 'WallboardMachines.jks'
-    apksign: true
-    
-    apksignerArguments: --min-sdk-version 23
-    apksignerKeystorePassword: '$(jarsignerKeystorePassword)'
-    apksignerKeystoreAlias: '$(MYAPP_UPLOAD_KEY_ALIAS)'
-    apksignerKeyPassword: '$(jarsignerKeyPassword)'
-    zipalign: false
-
-- script: mv android/app/build/outputs/bundle/release/app-release.aab WallBoard$(Build.BuildNumber).aab
-  displayName: 'Rename apk'
-- task: PublishBuildArtifacts@1
-  inputs:
-    pathtoPublish: WallBoard$(Build.BuildNumber).aab
-    artifactName: drop
-    publishLocation: 'container'
- 
-
-
-
+    platform: 'ios'
+    entryFile: 'index.js'
+    bundleOutput: 'main.jsbundle'
+    assetsDest: 
+    devFlag: false
 - task: Xcode@5
   inputs:
     actions: 'build'
