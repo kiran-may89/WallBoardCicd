@@ -82,7 +82,13 @@ steps:
     versionCode: '$(deployedVersionCode)'
     versionName: '$(major).$(minor).$(revision)'
     printFile: true
-
+- task: ReactNativeBundle@0
+  inputs:
+    platform: 'ios'
+    entryFile: 'index.js'
+    bundleOutput: 'main.jsbundle'
+    assetsDest: 
+    devFlag: false
 - task: Xcode@5
   inputs:
     actions: 'build'
