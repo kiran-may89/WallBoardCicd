@@ -86,7 +86,6 @@ steps:
   inputs:
     platform: 'ios'
     entryFile: 'index.js'
-    bundleOutput: 'main.jsbundle'
     assetsDest: 
     devFlag: false
 - task: Xcode@5
